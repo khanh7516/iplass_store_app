@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"	pageEncoding="utf-8"%>
 <%@ page import="storeApp.product.util.URLHelper"%>
 <%@ page import="storeApp.product.entity.Product"%>
+<%@ page import="storeApp.product.entity.ProductImage"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="m" uri="http://iplass.org/tags/mtp"%>
 <%@ page import="org.iplass.mtp.web.template.TemplateUtil"%>
@@ -10,6 +11,7 @@
 <%
 	request.setAttribute("staticContentPath", TemplateUtil.getStaticContentPath());
 	List<Product> productList = (List<Product>) request.getAttribute("productList"); 
+	List<ProductImage> imageList = (List<ProductImage>) request.getAttribute("imageList"); 
 %>
 <head>
 <meta charset="utf-8">
@@ -98,18 +100,11 @@ crossorigin="anonymous">
                 <div class="col-md-7">
                     <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
+                            <% for (ProductImage i : imageList) { %>
                             <div class="carousel-item active">
-                                <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_15_pro_max_512gb_-_1_1_.png" class="d-block w-100 product-image-slide" alt="Product Image 1">
+                                <img src="<%= URLHelper.getProductImageResource(i) %>" class="d-block w-100 product-image-slide" alt="Product Image 1">
                             </div>
-                            <div class="carousel-item">
-                                <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_15_pro_max_256gb_-_2_1.png" class="d-block w-100 product-image-slide" alt="Product Image 2">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_15_pro_128tb_-_3_1.png" class="d-block w-100 product-image-slide" alt="Product Image 3">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_15_pro_max_256gb_-_10.png" class="d-block w-100 product-image-slide" alt="Product Image 4">
-                            </div>
+                            <% } %>
                         </div>
                         <a class="carousel-control-prev" data-bs-target="#productCarousel" role="button" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
