@@ -206,7 +206,7 @@
                 <div class="product-item-container">
                 	<a href="<%= URLHelper.getProductDetailPath(i.getOid()) %>">
 	                    <div class="product-image">
-	                        <img src="<%= URLHelper.getProductImageResource(i) %>" alt="">
+	                        <img src="<%= URLHelper.getProductImageResource(i, "productImage") %>" alt="">
 	                    </div>
 	                    <div class="product-name">
 	                        <h6><%= i.getName() %></h6>

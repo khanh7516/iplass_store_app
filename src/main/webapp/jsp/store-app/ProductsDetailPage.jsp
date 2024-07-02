@@ -6,12 +6,13 @@
 <%@ taglib prefix="m" uri="http://iplass.org/tags/mtp"%>
 <%@ page import="org.iplass.mtp.web.template.TemplateUtil"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 <%
 	request.setAttribute("staticContentPath", TemplateUtil.getStaticContentPath());
 	List<Product> productList = (List<Product>) request.getAttribute("productList"); 
-	List<ProductImage> imageList = (List<ProductImage>) request.getAttribute("imageList"); 
 %>
 <head>
 <meta charset="utf-8">
@@ -96,15 +97,34 @@ crossorigin="anonymous">
                 <i class="fas fa-star"></i> <i class="fas fa-star"></i>
                 <i class="fas fa-star"></i></h5>
                 <hr>
+                <p>${m:esc(imageList)}</p>
             <div class="row product-details">
                 <div class="col-md-7">
                     <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
-                            <% for (ProductImage i : imageList) { %>
-                            <div class="carousel-item active">
-                                <img src="<%= URLHelper.getProductImageResource(i) %>" class="d-block w-100 product-image-slide" alt="Product Image 1">
-                            </div>
-                            <% } %>
+							<%-- <%
+                            List<ProductImage> imageList = (List<ProductImage>) request.getAttribute("imageList");
+                                if (imageList == null || imageList.isEmpty()) {
+                            %>
+                                <div class="carousel-item active">
+                                    <img src="<%= TemplateUtil.getStaticContentPath() + "/images/defaultImageForProduct.png" %>" class="d-block w-100 product-image-slide" alt="Default Product Image">
+                                </div>
+                            <%
+                                } else {
+                                    for (ProductImage i : imageList) {
+                            %>
+                                <div class="carousel-item <%= imageList.indexOf(i) == 0 ? "active" : "" %>">
+                                    <img src="<%= URLHelper.getProductImageResource(i) %>" class="d-block w-100 product-image-slide" alt="Product Image <%= imageList.indexOf(i) + 1 %>">
+                                </div>
+                            <%
+                                    }
+                                }
+                            %> --%>
+                            <c:forEach var="image" items="${imageList}" varStatus="status">
+                                <div class="carousel-item ${status.first ? 'active' : ''}">
+                                    <img src="${fn:escapeXml(URLHelper.getProductImageResource(image, 'productImageRef'))}" class="d-block w-100 product-image-slide" alt="Product Image">
+                                </div>
+					        </c:forEach>
                         </div>
                         <a class="carousel-control-prev" data-bs-target="#productCarousel" role="button" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -211,7 +231,7 @@ crossorigin="anonymous">
                     	<a href="<%= URLHelper.getProductDetailPath(p.getOid()) %>">
 	                        <div class="discount">Giảm 6%</div>
 	                        <div class="installment">Trả góp 0%</div>
-	                        <img src="<%= URLHelper.getProductImageResource(p) %>" alt="Product 1">
+	                        <img src="<%= URLHelper.getProductImageResource(p, "productImage") %>" alt="Product 1">
 	                        <div style="min-height: 15%;"><h5><%= p.getName() %></h5></div>
 	                        <div class="price"><%= p.getPrice() %> <span class="old-price"><%= p.getOldPrice() %></span></div>
 	                        <div class="rating"><i class="fas fa-star"></i> <i class="fas fa-star"></i>

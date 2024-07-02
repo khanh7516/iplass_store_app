@@ -1,6 +1,7 @@
 package storeApp.product.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.iplass.gem.command.Constants;
@@ -19,12 +20,7 @@ import storeApp.product.entity.CategoryProduct;
 import storeApp.product.entity.Product;
 import storeApp.product.entity.ProductImage;
 
-@ActionMapping(name = "store-app/product-detail", 
-displayName = "product detail", 
-privileged = true, 
-result = @Result(type = Type.JSP, value = "/jsp/store-app/ProductsDetailPage.jsp", 
-templateName = "store-app/DetailProductsPage"), 
-command = @CommandConfig(commandClass = DetailProductCommand.class))
+@ActionMapping(name = "store-app/product-detail", displayName = "product detail", privileged = true, result = @Result(type = Type.JSP, value = "/jsp/store-app/ProductsDetailPage.jsp", templateName = "store-app/DetailProductsPage"), command = @CommandConfig(commandClass = DetailProductCommand.class))
 @CommandClass(name = "store-app/product-detail", displayName = "product-detail")
 public class DetailProductCommand implements Command {
 
@@ -44,41 +40,80 @@ public class DetailProductCommand implements Command {
 			return Constants.CMD_EXEC_SUCCESS;
 		}
 		request.setAttribute("productInfo", product);
+		System.out.println(
+				"////////////////////////////////////////////////////////////////////////////////////////////");
 
-		
-//		 CategoryProduct category = product.getIdCategory(); 
-//		 Equals categoryCond = new Equals(PRODUCT_CATEGORY_OID, category.getOid());
-//		Equals categoryCond = new Equals(PRODUCT_CATEGORY_OID, product.getIdCategory().getOid());
-		
+//         CategoryProduct category = product.getIdCategory(); 
+//         Equals categoryCond = new Equals(PRODUCT_CATEGORY_OID, category.getOid());
+//        Equals categoryCond = new Equals(PRODUCT_CATEGORY_OID, product.getIdCategory().getOid());
+
 		System.out.print(product.getCategory());
 		System.out.print(product.getName());
 		System.out.print(product.getProductImg());
-		
+
 		// 検索処理の実行
 		Limit limit = new Limit(RESULT_LIMIT);
-		String[] propertis = new String[] { Product.OID, Product.NAME, Product.PRICE, Product.PRODUCT_IMG};
-		List<Product> productList = EntityDaoHelper.searchDistinctEntity(Product.DEFINITION_NAME, null, limit, propertis);
+		String[] propertis = new String[] { Product.OID, Product.NAME, Product.PRICE, Product.PRODUCT_IMAGE };
+		List<Product> productList = EntityDaoHelper.searchDistinctEntity(Product.DEFINITION_NAME, null, limit,
+				propertis);
 		if (productList.size() > 0) {
 			request.setAttribute("productList", productList);
 		}
-		
-		Limit imgLimit = new Limit(IMG_LIMIT);
-		String[] imgProperties = new String[] { ProductImage.OID, ProductImage.PRODUCT_IMAGE};
-		List<ProductImage> allProductImages = EntityDaoHelper.searchDistinctEntity(ProductImage.DEFINITION_NAME, null, imgProperties);
-//		List<ProductImage> imageList = new ArrayList<ProductImage>();
-		
-//		Equals imgEquals = new Equals(PRODUCT_IMAGE_OID, product.getPro);
-//		
-//		List<ProductImage> imageList = EntityDaoHelper.searchDistinctEntity(ProductImage.DEFINITION_NAME, imgEquals, imgLimit, imgProperties);
-//		if (imageList.size() > 0) {
-//			
-//		}
 
-		
-		request.setAttribute("imageList", product.getProductImg());
-		
+		/*
+		 * Limit imgLimit = new Limit(IMG_LIMIT); String[] imgProperties = new String[]
+		 * { ProductImage.OID, ProductImage.PRODUCT_IMAGE}; List<ProductImage>
+		 * allProductImages =
+		 * EntityDaoHelper.searchDistinctEntity(ProductImage.DEFINITION_NAME, null,
+		 * imgProperties);
+		 */
+//        List<ProductImage> imageList = new ArrayList<ProductImage>();
+
+//        Equals imgEquals = new Equals(PRODUCT_IMAGE_OID, product.getPro);
+//        
+//        List<ProductImage> imageList = EntityDaoHelper.searchDistinctEntity(ProductImage.DEFINITION_NAME, imgEquals, imgLimit, imgProperties);
+//        if (imageList.size() > 0) {
+//            
+//        }
+
+		ProductImage[] productImagesArray = product.getProductImg();
+
+		System.out.println(
+				"////////////////////////////////////////////////////////////////////////////////////////////");
+		if (productImagesArray == null) {
+			System.out.println("productImagesArray is null");
+		} else if (productImagesArray.length == 0) {
+			System.out.println("productImagesArray is empty");
+		} else {
+			System.out.println("productImagesArray length: " + productImagesArray.length);
+			
+			  for (ProductImage img : productImagesArray) { System.out.println(img); }// In ra từng phần tử của mảng }
+			 
+		}
+
+		List<ProductImage> images = Arrays.asList(productImagesArray);
+		List<ProductImage> imageList = new ArrayList<ProductImage>();
+        for (ProductImage image : images) {
+            System.out.println(image);
+            ProductImage productImg = EntityDaoHelper.load(ProductImage.DEFINITION_NAME, image.getOid());
+            imageList.add(productImg);
+            System.out.println(productImg);
+            System.out.println(
+    				"////////////////////////////////////////////////////////////////////////////////////////////");
+        }
+        
+        for (Product image : productList) {
+            System.out.println(image);
+            System.out.println(image.getProductImage());
+        }
+        
+        
+		request.setAttribute("imageList", imageList);
+
+		System.out.println(
+				"////////////////////////////////////////////////////////////////////////////////////////////");
 
 		return Constants.CMD_EXEC_SUCCESS;
 	}
-	
+
 }

@@ -19,12 +19,12 @@ public class URLHelper {
 		return TemplateUtil.getTenantContextPath() + String.format(CATEGORY_PAGE_URL_PATH, categoryId, page);
 	}
 	
-	public static String getProductImageResource(Entity product) {
+	public static String getProductImageResource(Entity product, String type) {
 		BinaryReference br = product.getValue("productImage");
 	    if (br == null) {
 	        return TemplateUtil.getStaticContentPath() + "/images/defaultImageForProduct.png";
 	    }
-	    return TemplateUtil.getTenantContextPath() + getBinaryResoucePath(br.getLobId(), "productImage");
+	    return TemplateUtil.getTenantContextPath() + getBinaryResoucePath(br.getLobId(), type);
 		
 	}
 	

@@ -133,7 +133,7 @@
 		<!-- for mysql -->
 		<property name="url" value="jdbc:mysql://localhost:3306/storeapp" />
 		<property name="user" value="root" />
-		<property name="password" value="Vnext@1234" />
+		<property name="password" value="1234" />
 		<property name="driver" value="com.mysql.cj.jdbc.Driver" />
 		
 
@@ -297,7 +297,7 @@
 		 -->
 		
 		<property name="binaryStore" class="org.iplass.mtp.impl.lob.lobstore.file.FileLobStore">
-			<property name="rootDir" value="E:\lowcode\iPLAss\real_projects\iplass-skeleton-master-main\iplass-skeleton-master-main\Iplass_store-web-app-master\binary-store" />
+			<property name="rootDir" value="C:\Users\khanhng\ws\lowcode\iplass\projects\iplass_store_app-master\binary-store" />
 			<property name="overwriteFile" value="false" />
 		</property>
 		<property name="longTextStore" class="org.iplass.mtp.impl.lob.lobstore.rdb.RdbLobStore">
